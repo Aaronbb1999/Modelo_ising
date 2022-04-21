@@ -45,9 +45,9 @@ import io
 
 # Parámetros
 # ========================================
-file_in = "ising_data.dat" # Nombre del fichero de datos
+file_in = "Resultados.dat" # Nombre del fichero de datos
 file_out = "ising" # Nombre del fichero de salida (sin extensión)
-interval = 100 # Tiempo entre fotogramas en milisegundos
+interval = 0.05 # Tiempo entre fotogramas en milisegundos
 save_to_file = False # False: muestra la animación por pantalla,
                      # True: la guarda en un fichero
 dpi = 150 # Calidad del vídeo de salida (dots per inch)
