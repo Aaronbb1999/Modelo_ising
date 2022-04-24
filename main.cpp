@@ -16,7 +16,7 @@ int main()
     FILE *f;
     f=fopen("Resultados.dat","w");
 
-    int semilla=162456;
+    int semilla=198756;
     tau=gsl_rng_alloc(gsl_rng_taus);
     gsl_rng_set(tau,semilla);
 
@@ -65,20 +65,23 @@ int main()
     {
 
         //Rellenamos la hoja de resultados
-        for(j=0;j<N;j++)
+        if(i==0||i%20==0)
         {
-            
-            for(k=0;k<N-1;k++)
+            for(j=0;j<N;j++)
             {
-                fprintf(f,"%i,",s[j][k]);
+
+                for(k=0;k<N-1;k++)
+                {
+                    fprintf(f,"%i, ",s[j][k]);
+                }
+                fprintf(f,"%i",s[j][N-1]);
+                fprintf(f,"\n");
             }
-            fprintf(f,"%i",s[j][k]);
             fprintf(f,"\n");
         }
-        fprintf(f,"\n");
+
 
         //Empezamos el algoritmo tomando una posición aleatoria (n,m)
-        p=1;
         n=gsl_rng_uniform_int(tau,N);
         m=gsl_rng_uniform_int(tau,N);
 
@@ -118,6 +121,7 @@ int main()
         //Calculamos E y comprobamos si hay que cambiar o no la orientación del spin.
         E=2*s[n][m]*(s[nd][m]+s[na][m]+s[n][md]+s[n][ma]);
 
+        p=1;
         if(exp(-E/T)<p)
         {
             p=exp(-E/T);
