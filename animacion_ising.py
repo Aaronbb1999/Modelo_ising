@@ -46,7 +46,7 @@ import io
 # Parámetros
 # ========================================
 file_in = "Resultados.dat" # Nombre del fichero de datos
-file_out = "ising" # Nombre del fichero de salida (sin extensión)
+file_out = "desordenado_5" # Nombre del fichero de salida (sin extensión)
 interval = 4 # Tiempo entre fotogramas en milisegundos
 save_to_file = True # False: muestra la animación por pantalla,
                      # True: la guarda en un fichero

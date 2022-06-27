@@ -8,7 +8,7 @@ gsl_rng *tau;
 int main()
 {
     double T,p,et;
-    int i,j,k,N=40,v=0,iter,aux;
+    int i,j,k,N=40,v=0,pmc=2000,aux;
     int nd,na,md,ma,E,n,m;
     int s[N][N];
     extern gsl_rng *tau;
@@ -24,8 +24,6 @@ int main()
     //Configuración inicial
     printf("Para configuracion ordenada pulse 1:");
     scanf("%i",&v);
-    printf("Numero de iteraciones:");
-    scanf("%i",&iter);
     printf("Temperatura [0,5]:");
     scanf("%lf",&T);
 
@@ -61,76 +59,76 @@ int main()
 
 
     //Algoritmo de Metropolis
-    for(i=0;i<iter;i++)
+    for(i=0;i<pmc;i++)
     {
 
         //Rellenamos la hoja de resultados
-        if(i==0||i%20==0)
-        {
-            for(j=0;j<N;j++)
-            {
 
-                for(k=0;k<N-1;k++)
-                {
-                    fprintf(f,"%i, ",s[j][k]);
-                }
-                fprintf(f,"%i",s[j][N-1]);
-                fprintf(f,"\n");
+        for(j=0;j<N;j++)
+        {
+            for(k=0;k<N-1;k++)
+            {
+                fprintf(f,"%i, ",s[j][k]);
             }
+            fprintf(f,"%i",s[j][N-1]);
             fprintf(f,"\n");
         }
+        fprintf(f,"\n");
+        
 
-
-        //Empezamos el algoritmo tomando una posición aleatoria (n,m)
-        n=gsl_rng_uniform_int(tau,N);
-        m=gsl_rng_uniform_int(tau,N);
-
-
-        //Aplicamos las condiciones periódicas
-        if(n==0)
+        for(j=0;j<(N*N);j++)
         {
-            nd=1;
-            na=N-1;
-        }
-        else if(n==N-1)
-        {
-            nd=0;
-            na=N-2;
-        }
-        else
-        {
-            nd=n+1;
-            na=n-1;
-        }
-        if(m==0)
-        {
-            md=1;
-            ma=N-1;
-        }
-        else if(m==N-1)
-        {
-            md=0;
-            ma=N-2;
-        }
-        else
-        {
-            md=m+1;
-            ma=m-1;
-        }
-
-        //Calculamos E y comprobamos si hay que cambiar o no la orientación del spin.
-        E=2*s[n][m]*(s[nd][m]+s[na][m]+s[n][md]+s[n][ma]);
-
-        p=1;
-        if(exp(-E/T)<p)
-        {
-            p=exp(-E/T);
-        }
-
-        et=gsl_rng_uniform(tau);
-        if(et<p)
-        {
-            s[n][m]=-s[n][m];
+            //Empezamos el algoritmo tomando una posición aleatoria (n,m)
+            n=gsl_rng_uniform_int(tau,N);
+            m=gsl_rng_uniform_int(tau,N);
+    
+    
+            //Aplicamos las condiciones periódicas
+            if(n==0)
+            {
+                nd=1;
+                na=N-1;
+            }
+            else if(n==N-1)
+            {
+                nd=0;
+                na=N-2;
+            }
+            else
+            {
+                nd=n+1;
+                na=n-1;
+            }
+            if(m==0)
+            {
+                md=1;
+                ma=N-1;
+            }
+            else if(m==N-1)
+            {
+                md=0;
+                ma=N-2;
+            }
+            else
+            {
+                md=m+1;
+                ma=m-1;
+            }
+    
+            //Calculamos E y comprobamos si hay que cambiar o no la orientación del spin.
+            E=2*s[n][m]*(s[nd][m]+s[na][m]+s[n][md]+s[n][ma]);
+    
+            p=1;
+            if(exp(-E/T)<p)
+            {
+                p=exp(-E/T);
+            }
+    
+            et=gsl_rng_uniform(tau);
+            if(et<p)
+            {
+                s[n][m]=-s[n][m];
+            }
         }
     }
     
